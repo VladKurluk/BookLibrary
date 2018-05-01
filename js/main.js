@@ -2,13 +2,21 @@ var books = {};
 
 $(document).ready(function () {
     $('#modal-add-book-ok').on('click', addBookToLibrary);
+    var saveBook = localStorage.getItem('library');
+    if (saveBook) {
+        books = JSON.parse(saveBook);
+        console.log(books);
+        for (var key in books) {
+            drawBook(key);
+        }
+    }
 });
 
 /*Ф-ия добавления книги в массив*/
 function addBookToLibrary() {
     var formData = $('form').serializeArray();
     console.log(formData);
-    var bookArray = [];
+    var bookArray = {};
     for (var key in formData) {
         bookArray[formData[key]['name']] = formData[key]['value'];
     }
@@ -25,6 +33,8 @@ function addBookToLibrary() {
     }
 
     $('#modal-add-book').modal('hide');
+
+    localStorage.setItem('library', JSON.stringify(books));
 
 }
 
